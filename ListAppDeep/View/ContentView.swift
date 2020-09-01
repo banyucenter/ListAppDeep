@@ -42,7 +42,7 @@ struct Home: View {
             //display data array at list
             List {
                 ForEach(Array(data.items.enumerated()), id: \.offset){offset, item in
-                    NavigationLink(destination: DetailView(data: item, index: offset)){
+                    NavigationLink(destination: DetailView(item: item, index: offset)){
                         Text(item.title)
                     }
                 }
@@ -62,7 +62,7 @@ struct Home: View {
         case .inactive:
             return AnyView(Button(action: {self.data.onAdd(title: self.data.newTitle)}) {
                 HStack{
-//                    Text("Add")
+                    //                    Text("Add")
                     Image(systemName: "plus")
                 }
                 .padding()
@@ -78,13 +78,13 @@ struct Home: View {
 
 //detail view for edit form
 struct DetailView : View {
-    @EnvironmentObject var datam : ItemModel
+    @EnvironmentObject var data : ItemModel
     
     //state for bind new title
     @State var newTitleValue : String = ""
     
     //data props
-    var data : Item
+    var item : Item
     
     //position index props
     let index : Int
@@ -99,14 +99,15 @@ struct DetailView : View {
             TextField("Person Name ", text: $newTitleValue)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .onAppear{
-                    self.newTitleValue = self.data.title
+                    self.newTitleValue = self.item.title
             }
             
             //HStack button update and go home
             HStack{
                 //Update button
                 Button(action: {
-                    self.datam.items[self.index].title = self.newTitleValue
+                    //func onUpdate
+                    self.data.onUpdate(index: self.index, title: self.newTitleValue)
                 }){
                     Text("Update")
                 }

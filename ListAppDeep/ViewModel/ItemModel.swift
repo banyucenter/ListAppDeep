@@ -12,13 +12,11 @@ import SwiftUI
 
 class ItemModel: ObservableObject {
     @Published var newTitle : String = ""
-    
     @Published var items : [Item] = []
     
     func onAdd(title: String) {
         items.append(Item(title: title))
-        self.newTitle = "" 
-        
+        self.newTitle = ""
     }
     
     func onDelete(offset: IndexSet) {
@@ -28,6 +26,8 @@ class ItemModel: ObservableObject {
     func onMove(source: IndexSet, destination: Int){
         items.move(fromOffsets: source, toOffset: destination)
     }
-    
-    
+ 
+    func onUpdate(index: Int, title: String) {
+        items[index].title = title
+    }
 }
